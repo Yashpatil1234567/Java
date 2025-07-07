@@ -1,0 +1,28 @@
+import java.util.Scanner;
+public class Palindrome {
+
+	
+	public static void main(String[] args) {
+		@SuppressWarnings("resource")
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("enter the string to reverse:");
+		
+		String input =scanner.nextLine();
+		String reversed ="";
+		
+		for(int i=0;i<input.length();i++) {
+			reversed+=input.charAt(i);
+		}
+		
+		if(input.equals(reversed)) {
+			System.out.println("string is palindrome");
+		}
+		else {
+			System.out.println("string is not palindrome");
+		}
+		
+		
+		
+
+	}
