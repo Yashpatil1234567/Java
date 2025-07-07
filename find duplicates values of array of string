@@ -1,0 +1,17 @@
+
+public class FindDuplicate{
+	public static void main(String args[]) {
+		String[] array1= {"sultan","appa","bacchan","kurosaki"};
+		String[] array2= {"suyog","sultan","sarthak","kurosaki"};
+		
+		
+		for(int i=0;i<array1.length;i++) {
+			for(int j=0;j<array2.length;j++) {
+				if(array1[i].equals(array2[j])) {
+					System.out.println(array1[i]);
+					break;
+				}
+			}
+		}
+	}
+}	
