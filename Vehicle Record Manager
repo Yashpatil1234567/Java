@@ -1,0 +1,109 @@
+import java.io.*;
+import java.util.*;
+
+public class VehicleManager {
+
+
+    static class Vehicle {
+        int vehicleId;
+        String model;
+        String type;
+        double price;
+
+        
+        public Vehicle(int vehicleId, String model, String type, double price) {
+            this.vehicleId = vehicleId;
+            this.model = model;
+            this.type = type;
+            this.price = price;
+        }
+
+        
+        public int getVehicleId() {
+            return vehicleId;
+        }
+
+        public String getModel() {
+            return model;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public double getPrice() {
+            return price;
+        }
+
+       
+        @Override
+        public String toString() {
+            return "Vehicle ID: " + vehicleId + ", Model: " + model + ", Type: " + type + ", Price: " + price;
+        }
+    }
+
+  
+    public static void writeVehicles() {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        
+        vehicles.add(new Vehicle(101, "Toyota Corolla", "Sedan", 25000.00));
+        vehicles.add(new Vehicle(102, "Honda Civic", "Sedan", 22000.00));
+        vehicles.add(new Vehicle(103, "Tesla Model 3", "Electric", 35000.00));
+        vehicles.add(new Vehicle(104, "Ford F-150", "Truck", 35000.00));
+        vehicles.add(new Vehicle(105, "Chevrolet Spark", "Hatchback", -5000.00)); // Invalid price
+
+        
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream("Vehicles.db"))) {
+            for (Vehicle vehicle : vehicles) {
+                if (vehicle.getPrice() > 0) {
+                    dos.writeInt(vehicle.getVehicleId());
+                    dos.writeUTF(vehicle.getModel());
+                    dos.writeUTF(vehicle.getType());
+                    dos.writeDouble(vehicle.getPrice());
+                }
+            }
+            System.out.println("Valid vehicle records have been written to Vehicles.db");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+   
+    public static void readVehicles() {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        try (DataInputStream dis = new DataInputStream(new FileInputStream("Vehicles.db"))) {
+            while (dis.available() > 0) {
+                int vehicleId = dis.readInt();
+                String model = dis.readUTF();
+                String type = dis.readUTF();
+                double price = dis.readDouble();
+
+                vehicles.add(new Vehicle(vehicleId, model, type, price));
+            }
+
+            
+            vehicles.sort(Comparator.comparingDouble(Vehicle::getPrice).reversed());
+
+
+            System.out.println("Sorted Vehicle Records (By Price Descending):");
+            for (Vehicle vehicle : vehicles) {
+                System.out.println(vehicle);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public static void main(String[] args) {
+        
+        writeVehicles();
+
+     
+        readVehicles();
+    }
+}
+
+
